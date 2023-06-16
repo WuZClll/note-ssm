@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.note.model.note.dao.NoteDao">
+    <insert id="addNode" parameterType="com.note.model.note.vo.Note">
+        insert into note(id, title, context, create_date, name) VALUES (#{id}, #{title}, #{context}, #{createDate}, #{name})
+    </insert>
+</mapper>

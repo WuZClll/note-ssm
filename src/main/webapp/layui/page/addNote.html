@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../lib/layui-v2.7.6/layui/css/layui.css" media="all">
+    <script src="../lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="../css/public.css" media="all">
+    <script src="../js/layui.js" charset="utf-8"></script>
+    <script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+    <link rel="stylesheet" href="../js/iconfont.css" media="all">
+    <title>添加日记</title>
+</head>
+<style>
+
+</style>
+<body>
+<div class="layui-form">
+    <input type="text" name="title" placeholder="这里输入日记标题" class="layui-input">
+    <hr class="ws-space-16">
+    <textarea name="context" placeholder="这里输入日记内容" class="layui-textarea"style="height: 400px;"></textarea>
+    <button class="layui-btn" lay-submit lay-filter="addNote">提交日记</button>
+</div>
+<script>
+    layui.use(['element', 'layer', 'layuimini'], function () {
+        var $ = layui.jquery,
+            element = layui.element,
+            layer = layui.layer;
+        var form = layui.form;
+
+        // 监听表单提交事件
+        form.on('submit(addNote)', function (data) {
+            // 获取表单数据
+            var field = data.field;
+            $.ajax({
+                url: '/note/note/addNote',
+                dataType: 'json',
+                data: field,	//查询状态为正常的所有机构类型
+                type: 'post',
+                success: function (data) {
+                    // 请求成功后执行的操作
+
+                    if (data.status === 1) {
+                        console.log(data.status)
+                        // 关闭弹出层
+                        // var index = parent.layer.getFrameIndex(window.name); // 获取弹出层索引
+                        layer.msg(data.message, {icon: 1});
+                        // parent.layer.close(index); // 关闭弹出层
+                        /*setTimeout(function () {
+                            parent.layer.close(index);
+                        }, 1000);*/
+                    } else {
+                        console.log(data.status)
+                        // 请求失败的情况
+                        // var index = parent.layer.getFrameIndex(window.name); // 获取弹出层索引
+                        layer.msg(data.message, {icon: 5});
+                        if (data.message === "登陆过期，请重新登录") {
+                            alert("登陆过期，请重新登录")
+                            setTimeout(function () {
+                                location.href = "/note"
+                            }, 1000);
+                        }
+                       /* setTimeout(function () {
+                            parent.layer.close(index);
+                        }, 1000);*/
+                    }
+                },
+                error: function() {
+                    // 请求失败的情况
+                    // var index = parent.layer.getFrameIndex(window.name); // 获取弹出层索引
+                    layer.msg("服务器繁忙，请稍后重试！", {icon: 5});
+                  /*  setTimeout(function () {
+                        parent.layer.close(index);
+                    }, 1000);*/
+                }
+            })
+
+            return false; // 阻止默认 form 跳转
+        });
+    });
+</script>
+</body>
+</html>

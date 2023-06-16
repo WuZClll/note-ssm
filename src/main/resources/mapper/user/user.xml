@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.note.model.user.dao.UserDao">
+    <select id="login" resultType="com.note.model.user.vo.User">
+        select id, username, password from user where username=#{username} and password = #{password};
+    </select>
+
+    <insert id="register" parameterType="com.note.model.user.vo.User">
+        insert into user(id, username, password)
+        values (#{id}, #{username}, #{password})
+    </insert>
+</mapper>
