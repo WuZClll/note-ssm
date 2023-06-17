@@ -27,4 +27,10 @@ public class UserServiceImpl implements UserService {
         Integer register = userDao.register(user);
         return register>=1;
     }
+
+    @Override
+    public boolean moreUserName(String username) {
+        Integer userName = userDao.getUserName(username);
+        return userName == 0;
+    }
 }

@@ -18,15 +18,17 @@
             <form class="layui-form layui-form-pane" action="">
                 <div class="layui-form-item">
                     <div class="layui-input-inline">
-                        <input type="text" required lay-verify="required" placeholder="请输入日记标题" autocomplete="off" class="layui-input" id="title">
+                        <input type="text" required lay-verify="required" placeholder="请输入日记标题"
+                               autocomplete="off" class="layui-input" id="title">
                     </div>
                     <div class="layui-inline">
-                        <label class="layui-form-label">创建时间</label>
+                        <label class="layui-form-label">创建日期</label>
                         <div class="layui-input-inline">
-                            <input type="text" class="layui-input" id="create_date" placeholder="yyyy-MM-dd HH:mm:ss">
+                            <input type="text" class="layui-input" id="create_date" placeholder="yyyy-MM-dd">
                         </div>
                     </div>
                     <button type="button" class="layui-btn layui-btn-normal" id="search">搜索</button>
+                    <button type="button" class="layui-btn layui-btn-normal" id="main">返回主页</button>
                 </div>
             </form>
         </div>
@@ -44,39 +46,124 @@
 
 
         //搜索功能
-        $("#search").click(function (){
+        $("#search").click(function () {
             tableInit()
         })
+        //返回功能
+        $("#main").click(function () {
+            location.href = "/note/layui/page/index.html"
+        })
         var CheckedMgr = {
-            tableId:'demo',
+            tableId: 'demo',
         }
         laydate.render({
             elem: '#create_date',
-            type: 'datetime'
         });
 
         // 表格渲染
         tableInit()
-        function tableInit(){
+
+        function tableInit() {
             table.render({
                 elem: '#' + CheckedMgr.tableId
-                ,height: 500
-                ,url: '/note/note/listNote' //数据接口
-                ,where:{"title":$("#title").val(),"createDate":$("#create_date").val()}
-                ,title: '日记'
-                ,page: true //开启分页
-                ,totalRow: true //开启合计行
-                ,cols: [[ //表头
+                , height: 500
+                , url: '/note/note/listNote' //数据接口
+                , where: {"title": $("#title").val(), "createDate": $("#create_date").val()}
+                , title: '日记'
+                , page: true //开启分页
+                , totalRow: true //开启合计行
+                , cols: [[ //表头
                     {type: 'checkbox', fixed: 'left'}
-                    ,{field: 'id', title: 'ID', hide:'true'}
-                    ,{field: 'title', title: '日记题目'}
-                    ,{field: 'name', title: '日记所属人'}
-                    ,{field: 'createDate', title: '创建时间'}
-                    ,{field: 'updateDate', title: '最后修改时间'}
+                    , {field: 'id', title: 'ID', hide: 'true'}
+                    , {field: 'title', title: '日记题目'}
+                    , {field: 'name', title: '日记所属人'}
+                    , {field: 'createDate', title: '创建时间'}
+                    , {field: 'updateDate', title: '最后修改时间'}
+                    , {fixed: 'right', title: '操作', align: 'center', toolbar: '#barDemo'}
                 ]]
+                , done: function (res, curr, count) {
+                    if (data.msg === "登陆过期") {
+                        alert("登陆过期，请重新登录")
+                        setTimeout(function () {
+                            location.href = "/note"
+                        }, 1000);
+                    }
+                }
+
             });
         }
+
+        table.on('tool(currentTableFilter)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'edit') {
+                // 编辑操作
+                layer.open({
+                    type: 2,
+                    title: '编辑日记',
+                    content: '/note/layui/page/editNote.html?id=' + data.id,
+                    area: ['80%', '90%'],
+                    success: function(layero, index){
+                        console.log(data)
+
+                        // 获取弹窗中的表单
+                        var body = layer.getChildFrame('body', index);
+                        var form = body.find('form');
+                        // 向表单中填充数据
+                        form.find('input[name="title"]').val(data.title);
+                        form.find('textarea[name="context"]').val(data.context);
+                        form.find('input[name="id"]').val(data.id);
+                        // 重新渲染表单
+                        form.render();
+                    },
+                    yes: function(index, layero){
+                        // 点击保存按钮的回调
+                        var body = layer.getChildFrame('body', index);
+                        var form = body.find('form');
+                        form.submit();
+                    }
+                })
+            } else if (obj.event === 'del') {
+                // 删除操作
+                layer.confirm('确定要删除这条数据吗？', function (index) {
+                    // 向服务端发送删除指令
+                    $.ajax({
+                            url: '/note/note/delNote',
+                            data: {id: data.id},
+                            success: function (res) {
+                                if (res.status === 1) {
+                                    // 删除成功
+                                    layer.msg(res.message);
+                                    // 刷新表格
+                                    table.reload('demo');
+                                } else {
+                                    if (res.message === "登陆过期") {
+                                        alert("登陆过期，请重新登录")
+                                        setTimeout(function () {
+                                            location.href = "/note"
+                                        }, 1000);
+                                    } else {
+                                        layer.msg(res.message);
+                                        table.reload('demo');
+                                }
+                            }
+                        },
+                        error: function(){
+                            // 删除失败
+                            layer.msg('删除失败');
+                        }
+                });
+                layer.close(index);
+            }
+        )
+            ;
+        }
+    });
+
     })
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 </body>
 </html>

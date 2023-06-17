@@ -10,15 +10,18 @@
     </insert>
 
     <select id="selectNote" parameterType="com.note.model.note.vo.param.NoteParam" resultType="com.note.model.note.vo.Note">
-        select *
+        select id, title, context, create_date as createDate, name, update_date as updateDate
         from note
         <where>
             <if test="title != null and title != ''">
                 and title like "%"#{title}"%"
             </if>
             <if test="createDate != null and createDate != ''">
-                and create_date = #{createDate}
+                and create_date like #{createDate}"%"
             </if>
+        <if test="true">
+            and name = #{name}
+        </if>
         </where>
         limit #{page},#{limit}
     </select>
@@ -33,7 +36,30 @@
             <if test="createDate != null and createDate != ''">
                 and create_date = #{createDate}
             </if>
+            <if test="true">
+                and name = #{name}
+            </if>
         </where>
 
     </select>
+
+    <delete id="delNote" parameterType="string">
+        delete from note where id = #{id}
+    </delete>
+
+    <update id="editNote" parameterType="com.note.model.note.vo.Note">
+        update note
+        <set>
+            <if test="title!=null and title!=''">
+                title = #{title},
+            </if>
+            <if test="context!=null and context!=''">
+                context = #{context},
+            </if>
+            <if test="true">
+                update_date = #{updateDate}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>

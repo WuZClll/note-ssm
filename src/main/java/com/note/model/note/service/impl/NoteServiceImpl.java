@@ -39,4 +39,17 @@ public class NoteServiceImpl implements NoteService {
         Integer count = noteDao.selectNoteCount(noteParam);
         return count;
     }
+
+    @Override
+    public Integer delNote(String id) {
+        Integer integer = noteDao.delNote(id);
+        return integer;
+    }
+
+    @Override
+    public Integer editNote(Note note) {
+
+        Integer integer = noteDao.editNote(note);
+        return integer;
+    }
 }

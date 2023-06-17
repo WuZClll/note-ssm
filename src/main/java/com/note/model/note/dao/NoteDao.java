@@ -2,6 +2,7 @@ package com.note.model.note.dao;
 
 import com.note.model.note.vo.Note;
 import com.note.model.note.vo.param.NoteParam;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -17,4 +18,8 @@ public interface NoteDao {
 
     ArrayList<Note> selectNote(NoteParam noteParam);
     Integer selectNoteCount(NoteParam noteParam);
+
+    Integer delNote(@Param("id") String id);
+
+    Integer editNote(Note note);
 }

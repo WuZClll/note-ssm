@@ -19,4 +19,8 @@ public interface NoteService {
     Boolean addNote(Note note);
     ArrayList<Note> selectNote(NoteParam noteParam);
     Integer selectNoteCount(NoteParam noteParam);
+
+    Integer delNote(String id);
+
+    Integer editNote(Note note);
 }

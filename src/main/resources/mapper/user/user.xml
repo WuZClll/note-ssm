@@ -12,4 +12,8 @@
         insert into user(id, username, password)
         values (#{id}, #{username}, #{password})
     </insert>
+
+    <select id="getUserName" parameterType="com.note.model.user.vo.User">
+        select count(*) from user where username=#{username};
+    </select>
 </mapper>

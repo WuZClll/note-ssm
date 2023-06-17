@@ -70,6 +70,9 @@ public class UserController {
     @PostMapping("/doRegister")
     @ResponseBody
     public JsonResult doRegister(User user) {
+        if (!userService.moreUserName(user.getUsername())) {
+            return new JsonResult(JsonResult.FALL, null, "用户名已存在");
+        }
         UUID uuid = UUID.randomUUID();
         user.setId(uuid.toString());
         Boolean register = userService.doRegister(user);

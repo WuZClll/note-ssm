@@ -15,4 +15,6 @@ public interface UserService {
     User login(String username, String password);
 
     Boolean doRegister(User user);
+
+    boolean moreUserName(String username);
 }

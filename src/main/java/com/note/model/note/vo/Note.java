@@ -20,7 +20,7 @@ public class Note {
     private String id;
     private String title;
     private String context;
-    private LocalDate createDate;
+    private String createDate;
     private String name;
     private String updateDate;
 }

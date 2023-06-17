@@ -15,4 +15,5 @@ public interface UserDao {
 
     Integer register(User user);
 
+    Integer getUserName(@Param("username") String username);
 }

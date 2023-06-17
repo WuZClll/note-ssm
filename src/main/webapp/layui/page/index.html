@@ -82,8 +82,8 @@
     <div class="layui-side layui-bg-black">
         <ul class="layui-nav layui-nav-tree layui-nav-side" style="margin-top: 64px">
             <li class="layui-nav-item"><a href="javascript:;" data-url="/note/layui/page/addNote.html" id="pwd">密码</a></li>
-            <li class="layui-nav-item"><a href="javascript:;" data-url="/note/layui/page/addNote.html" id="addNote">新增日记</a></li>
-            <li class="layui-nav-item"><a href="javascript:;"data-url="/note/note/selectNode" id="selectNote">查询日记</a></li>
+            <li class="layui-nav-item"><a href="/note/layui/page/addNote.html" data-url="/note/layui/page/addNote.html" id="addNote">新增日记</a></li>
+            <li class="layui-nav-item"><a href="/note/layui/page/listNote.html"data-url="/note/note/selectNode" id="selectNote">查询日记</a></li>
         </ul>
     </div>
 
@@ -148,7 +148,7 @@
         // layuimini.init('/note/user/initMenu');
         $('.login-out').on("click", function () {
             layer.msg('退出登录成功', function () {
-                window.location = '/';
+                window.location = '/note';
             });
         });
         $('.layui-nav-item').click(function () {

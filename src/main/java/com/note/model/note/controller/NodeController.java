@@ -6,6 +6,7 @@ import com.note.model.note.vo.param.NoteParam;
 import com.note.model.note.vo.result.NoteResult;
 import com.note.utils.JsonResult;
 import lombok.val;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -40,8 +44,10 @@ public class NodeController {
         if ("".equals(name) || name == null) {
             return new JsonResult(JsonResult.FALL, null, "登陆过期，请重新登录");
         }
-        LocalDate now = LocalDate.now();
-        note.setCreateDate(now);
+        LocalDateTime now = LocalDateTime.now();
+
+        String formattedDateTime = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        note.setCreateDate(formattedDateTime);
         Boolean flag = noteService.addNote(note);
         if (flag) {
             return new JsonResult(JsonResult.SUCCESS, null, "添加成功");
@@ -55,11 +61,47 @@ public class NodeController {
     public NoteResult listNote(NoteParam noteParam, HttpSession session) {
         String name = (String) session.getAttribute("username");
         if ("".equals(name) || name == null) {
-            return new NoteResult();
+            return new NoteResult("登陆过期", -1, null);
         }
+        noteParam.setName(name);
         ArrayList<Note> notes = noteService.selectNote(noteParam);
         Integer count = noteService.selectNoteCount(noteParam);
         NoteResult noteResult = new NoteResult("查询成功", count, notes);
         return noteResult;
     }
+
+    @GetMapping("/delNote")
+    @ResponseBody
+    public JsonResult listNote(String id, HttpSession session) {
+        String name = (String) session.getAttribute("username");
+        if ("".equals(name) || name == null) {
+            return new JsonResult(JsonResult.FALL, null, "登陆过期");
+        }
+        Integer integer = noteService.delNote(id);
+        if (integer > 0) {
+            return new JsonResult(JsonResult.SUCCESS, integer, "删除成功");
+        } else {
+            return new JsonResult(JsonResult.FALL, integer, "没有数据被删除");
+        }
+    }
+
+    @PostMapping("/editNote")
+    @ResponseBody
+    public JsonResult editNote(Note note, HttpSession session) {
+        String name = (String) session.getAttribute("username");
+        if ("".equals(name) || name == null) {
+            return new JsonResult(JsonResult.FALL, null, "登陆过期");
+        }
+        LocalDateTime now = LocalDateTime.now();
+
+        String formattedDateTime = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        note.setUpdateDate(formattedDateTime);
+        Integer integer = noteService.editNote(note);
+        if (integer > 0) {
+            return new JsonResult(JsonResult.SUCCESS, integer, "修改成功");
+        } else {
+            return new JsonResult(JsonResult.FALL, integer, "没有数据被修改");
+        }
+    }
+
 }
