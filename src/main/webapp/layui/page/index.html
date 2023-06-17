@@ -151,14 +151,20 @@
                 window.location = '/';
             });
         });
-        element.on('nav(side-nav)', function (elem) {
+        $('.layui-nav-item').click(function () {
+            // 获取 data-url 属性的值
+            var url = $(this).attr('data-url');
+            // 加载对应的模块
+            loadPage(url);
+        });
+/*        element.on('nav(side-nav)', function (elem) {
             // 获取被点击的元素的 id 属性值
             var id = elem.attr('id');
 
             // 切换到对应的标签页
             element.tabChange('layuiminiTab', id);
             console.log(id)
-        });
+        });*/
     });
 
     // 监听导航栏的点击事件

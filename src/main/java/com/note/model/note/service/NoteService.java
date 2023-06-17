@@ -6,6 +6,9 @@ package com.note.model.note.service;
  */
 
 import com.note.model.note.vo.Note;
+import com.note.model.note.vo.param.NoteParam;
+
+import java.util.ArrayList;
 
 /**
  * @Author Wu
@@ -14,4 +17,6 @@ import com.note.model.note.vo.Note;
  */
 public interface NoteService {
     Boolean addNote(Note note);
+    ArrayList<Note> selectNote(NoteParam noteParam);
+    Integer selectNoteCount(NoteParam noteParam);
 }

@@ -5,6 +5,33 @@
 
 <mapper namespace="com.note.model.note.dao.NoteDao">
     <insert id="addNode" parameterType="com.note.model.note.vo.Note">
-        insert into note(id, title, context, create_date, name) VALUES (#{id}, #{title}, #{context}, #{createDate}, #{name})
+        insert into note(id, title, context, create_date, name)
+        VALUES (#{id}, #{title}, #{context}, #{createDate}, #{name})
     </insert>
+
+    <select id="selectNote" parameterType="com.note.model.note.vo.param.NoteParam" resultType="com.note.model.note.vo.Note">
+        select *
+        from note
+        where
+        <if test="title != null and title != ''">
+            and title like "%"#{title}"%"
+        </if>
+        <if test="createDate != null and createDate != ''">
+            and create_date = #{createDate}
+        </if>
+        limit #{page},#{limit}
+    </select>
+
+    <select id="selectNoteCount" parameterType="com.note.model.note.vo.param.NoteParam" resultType="integer">
+        select count(*)
+        from note
+        where
+        <if test="title != null and title != ''">
+            and title like "%"#{title}"%"
+        </if>
+        <if test="createDate != null and createDate != ''">
+            and create_date = #{createDate}
+        </if>
+
+    </select>
 </mapper>
