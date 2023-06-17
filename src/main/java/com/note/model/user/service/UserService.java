@@ -17,4 +17,6 @@ public interface UserService {
     Boolean doRegister(User user);
 
     boolean moreUserName(String username);
+
+    Integer changePwd(User user);
 }

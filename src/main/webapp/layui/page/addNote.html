@@ -22,12 +22,8 @@
     <hr class="ws-space-16">
     <textarea name="context" placeholder="这里输入日记内容" class="layui-textarea"style="height: 400px;"></textarea>
     <button class="layui-btn" lay-submit lay-filter="addNote">提交日记</button>
-    <button class="layui-btn" id="main">返回主页</button>
 </div>
 <script>
-    $("#main").click(function () {
-        location.href = "/note/layui/page/index.html"
-    })
     layui.use(['element', 'layer', 'layuimini'], function () {
         var $ = layui.jquery,
             element = layui.element,

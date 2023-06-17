@@ -23,6 +23,22 @@
     <![endif]-->
 
 </head>
+<style>
+    .layui-iframe{
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
+    .layui-tab-content .layui-tab-item{
+        height: calc(100% - 40px);
+        padding: 10px;
+    }
+    #page-container{
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
+</style>
 <body class="layui-layout-body layuimini-all">
 <div class="layui-layout layui-layout-admin">
 
@@ -84,14 +100,16 @@
 <!--            <li class="layui-nav-item"><a href="javascript:;" data-url="/note/layui/page/addNote.html" id="pwd">密码</a></li>-->
 <!--            <li class="layui-nav-item"><a href="/note/layui/page/addNote.html" data-url="/note/layui/page/addNote.html" id="addNote">新增日记</a></li>-->
 <!--            <li class="layui-nav-item"><a href="/note/layui/page/listNote.html"data-url="/note/note/selectNode" id="selectNote">查询日记</a></li>-->
-            <li class="layui-nav-item"><a href="javascript:;" data-url="/note/layui/page/addNote.html" data-id="pwd" id="pwd">密码</a></li>
+            <li class="layui-nav-item"><a href="javascript:;" data-url="/note/layui/page/editPassWord.html" data-id="pwd" id="pwd">密码</a></li>
             <li class="layui-nav-item"><a href="javascript:;" data-url="/note/layui/page/addNote.html" data-id="addNote" id="addNote">新增日记</a></li>
             <li class="layui-nav-item"><a href="javascript:;" data-url="/note/layui/page/listNote.html" data-id="selectNote" id="selectNode">查询日记</a></li>
         </ul>
     </div>
 
-
     <div class="layui-body">
+        <div id="page-container"></div>
+    </div>
+<!--    <div class="layui-body">
         <div class="layui-tab layui-tab-card">
             <ul class="layui-tab-title">
                 <li class="layui-this">首页</li>
@@ -102,7 +120,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     <!-- 底部 -->
     <div class="layui-footer">
         <span style="margin-left: 1200px">© 日记管理系统</span>
@@ -147,20 +165,6 @@
                 window.location = '/note';
             });
         });
-/*        $('.layui-nav-item').click(function () {
-            // 获取 data-url 属性的值
-            var url = $(this).attr('data-url');
-            // 加载对应的模块
-            loadPage(url);
-        });*/
-/*        element.on('nav(side-nav)', function (elem) {
-            // 获取被点击的元素的 id 属性值
-            var id = elem.attr('id');
-
-            // 切换到对应的标签页
-            element.tabChange('layuiminiTab', id);
-            console.log(id)
-        });*/
         // 初始化Tab组件
         element.tabAdd('tab', {
             title: '首页',
@@ -168,36 +172,32 @@
             id: 'home'
         });
 
-        // 监听导航栏菜单项的点击事件
-        $('.layui-nav-item').click(function(){
-         /*   var url = $(this).data('url');
-            var id = $(this).data('id');
-            var title = $(this).text();
-*/
-            var url = $(this).find('a').data('url');
-            var id = $(this).find('a').data('id');
-            var title = $(this).find('a').text();
-            console.log(url)
-            // 判断是否已经打开该模块
+        $('.layui-nav-item').on('click', function(){
+            var url = $(this).find('a').data('url'); //获取页面地址
+            var id = $(this).find('a').data('id'); //获取页面ID
+            var title = $(this).find('a').text(); //获取页面标题
             var isExist = false;
-            $('.layui-tab-title li').each(function(){
+            console.log("ccc")
+   /*         $('.layui-tab-title li').each(function(){
+                console.log("bbb")
                 if($(this).attr('lay-id') == id){
                     isExist = true;
-                    element.tabChange('tab', id);
+                    element.tabChange('tab', id); //切换到已经存在的页面
                     return false;
                 }
             });
-
-            // 如果没有打开，则添加一个新的Tab页
-            if(!isExist){
+            if(!isExist){*/
+                //动态加载页面，并添加到指定的区域
+            $('#page-container .layui-tab-item').remove();
+                var html = '<div class="layui-tab-item layui-show" lay-id="' + id + '"><iframe src="' + url + '" frameborder="0" scrolling="yes" class="layui-iframe"></iframe></div>';
+                $('#page-container').append(html);
+                console.log("aaa")
                 element.tabAdd('tab', {
                     title: title,
-                    content: '<iframe src="' + url + '" frameborder="0" scrolling="yes" class="layui-iframe"></iframe>',
                     id: id
                 });
-                console.log(id)
                 element.tabChange('tab', id);
-            }
+            // }
         });
     });
 

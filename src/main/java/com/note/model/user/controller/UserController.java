@@ -54,18 +54,6 @@ public class UserController {
         return username;
     }
 
-    @GetMapping("/initMenu")
-    @ResponseBody
-    public String initMenu(HttpServletRequest request) throws JsonProcessingException {
-        list1000 = new ArrayList<>();
-        list = new ArrayList<>();
-        HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("username");
-        ObjectMapper mapper = new ObjectMapper();
-        ArrayList<Map<String, Object>> allProject = new ArrayList<Map<String, Object>>();
-
-        return username;
-    }
 
     @PostMapping("/doRegister")
     @ResponseBody
@@ -80,6 +68,21 @@ public class UserController {
             return new JsonResult(JsonResult.SUCCESS, null, "注册成功");
         } else {
             return new JsonResult(JsonResult.FALL, null, "注册失败");
+        }
+    }
+
+    @PostMapping("/changePassword")
+    @ResponseBody
+    public JsonResult changePassword(@Param("password") String password, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        Integer integer = userService.changePwd(user);
+        if (integer >= 1) {
+            return new JsonResult(JsonResult.SUCCESS, integer, "修改成功");
+        } else {
+            return new JsonResult(JsonResult.FALL, null, "修改失败");
         }
     }
 

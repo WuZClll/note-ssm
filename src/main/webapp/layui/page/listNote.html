@@ -28,7 +28,6 @@
                         </div>
                     </div>
                     <button type="button" class="layui-btn layui-btn-normal" id="search">搜索</button>
-                    <button type="button" class="layui-btn layui-btn-normal" id="main">返回主页</button>
                 </div>
             </form>
         </div>
@@ -48,10 +47,6 @@
         //搜索功能
         $("#search").click(function () {
             tableInit()
-        })
-        //返回功能
-        $("#main").click(function () {
-            location.href = "/note/layui/page/index.html"
         })
         var CheckedMgr = {
             tableId: 'demo',

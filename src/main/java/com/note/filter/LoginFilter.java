@@ -13,8 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @WebFilter(
-        filterName = "LoginFilter",
-        urlPatterns = {"/note/layui/page/*"}
+        urlPatterns = "/layui/page/*"
 
 )
 public class LoginFilter implements Filter {
@@ -31,14 +30,13 @@ public class LoginFilter implements Filter {
         String path = request.getContextPath();
         String url = request.getRequestURI();
         System.err.println(path);
-        if (session.getAttribute("user") == null) {
+        if (session.getAttribute("username") == null) {
             System.err.println("拦截");
-            response.sendRedirect(request.getContextPath() + "/note/layui/login.html");
+            response.sendRedirect(request.getContextPath() + "/");
         } else {
             System.out.println("放行");
             filterChain.doFilter(request, response);
         }
-
     }
     public void destroy() {
     }

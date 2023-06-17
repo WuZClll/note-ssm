@@ -33,4 +33,10 @@ public class UserServiceImpl implements UserService {
         Integer userName = userDao.getUserName(username);
         return userName == 0;
     }
+
+    @Override
+    public Integer changePwd(User user) {
+        Integer integer = userDao.changePwd(user);
+        return integer;
+    }
 }
