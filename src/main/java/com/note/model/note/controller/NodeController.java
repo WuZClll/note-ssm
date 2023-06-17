@@ -59,7 +59,7 @@ public class NodeController {
         }
         ArrayList<Note> notes = noteService.selectNote(noteParam);
         Integer count = noteService.selectNoteCount(noteParam);
-        NoteResult noteResult = new NoteResult(notes, count);
+        NoteResult noteResult = new NoteResult("查询成功", count, notes);
         return noteResult;
     }
 }

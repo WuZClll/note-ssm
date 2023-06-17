@@ -17,7 +17,8 @@ import java.util.List;
 @NoArgsConstructor
 public class NoteResult {
     private final int code = 0;
-    private List<Note> list;
+    private String msg;
     private int count;
+    private List<Note> data;
 
 }
