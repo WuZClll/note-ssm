@@ -5,8 +5,6 @@ import com.note.model.note.vo.Note;
 import com.note.model.note.vo.param.NoteParam;
 import com.note.model.note.vo.result.NoteResult;
 import com.note.utils.JsonResult;
-import lombok.val;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,11 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -29,7 +25,7 @@ import java.util.UUID;
  */
 @Controller
 @RequestMapping("/note")
-public class NodeController {
+public class NoteController {
 
     @Autowired
     NoteService noteService;
